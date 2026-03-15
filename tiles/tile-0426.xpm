@@ -1,0 +1,23 @@
+/* XPM */
+static char *tile-0426[] = {
+"16 16 3 1",
+"  c #FED92E",
+". c #073979",
+"X c #64AA2C",
+"XXXXXXXXXXXXXXXX",
+"XXXXXXXXXXXXXXXX",
+"XX......XXXXXXXX",
+"XX.  .......XXXX",
+"XX.  ...  ..XXXX",
+"XX...  .  ....XX",
+"XX...  ..... .XX",
+"XX......  ....XX",
+"XX......  ....XX",
+"XX.  ....... .XX",
+"XX.  .........XX",
+"XX..........XXXX",
+"XX......XXXXXXXX",
+"XXXXXXXXXXXXXXXX",
+"XXXXXXXXXXXXXXXX",
+"XXXXXXXXXXXXXXXX"
+};

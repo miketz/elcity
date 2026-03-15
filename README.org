@@ -1,118 +1,95 @@
-#+TITLE: ElCity (Emacs Lisp City)
+#+title: ElCity
 
-* Overview
+ElCity is a minimal city-building simulation game for Emacs. You build roads, zone
+residential/commercial/industrial areas, place utility buildings (power plants,
+fire/police stations, parks), all from the comfort of everybody's favourite Lisp machine.
 
-ElCity is a small, turn-based city builder that runs entirely inside Emacs.
-The UI is ASCII-based and optimized for terminal Emacs sessions.  The core
-simulation is deterministic and pure, while the UI handles rendering and input.
+Those interested in the whys and hows of the project, there's a [[file:HISTORY.org][HISTORY.org]] with the
+details of how it came to be.
 
-Screenshots for those interested in fancy graphics:
+* Systems Implemented
 
-#+CAPTION: Graphic
-[[file:screenshots/graphic.png]]
+All the classic moving parts are here:
 
-#+CAPTION: Terminal
-[[file:screenshots/terminal.png]]
+- Pollution
+- Crime
+- R/C/I demand
+- Fire risk
+- Police coverage
+- Traffic congestion
 
+The overall balance might feel off at times.
 
-This is an excercise in implementing the "functional core / imperative shell" architecture
-in a moderately sized project that with a developed UI. Every tile type is defined through
-a DSL, with a strong separation between state and effects. Most functions in the core are
-either pure or pure-ish.
+HINT: cycle map overlays with =m= to see each system's effects. The status panel also has
+contextual tooltips.
 
-Benefits to this approach:
-- easy to debug
-- scalable in terms of code: reduced cognitive load on both people and LLMs
-- easy UX/UI as state is always localized
-- easy to extend (with some discipline)
-- easy to autotest
+* More Than a Thousand Words
 
-* Requirements
+#+CAPTION: A growing city core.
+[[file:screenshots/town.png]]
 
-- Emacs 30.1+
+#+CAPTION: Pollution overlay in action.
+[[file:screenshots/pollution.png]]
 
-- Optional: Eask for dependency management
-
-* Installation
-
-Clone the repository and add it to your Emacs load path.  Example with
-=use-package=:
-
-#+begin_src elisp
-(use-package elcity
-  :load-path "/path/to/elcity"
-  :commands (elcity-start))
-#+end_src
-
-If you are not using =use-package=, add the directory to =load-path=
-and require the entry point:
-
-#+begin_src elisp
-(add-to-list 'load-path "/path/to/elcity")
-(require 'elcity)
-(elcity-start)
-#+end_src
-
-* Quick Start
-
-From the project root:
-
-#+begin_src sh
-make run
-#+end_src
-
-Or from Emacs: =M-x elcity-start=
-
-* Game Logic
-
-- The game is turn-based.  Press =n= to advance one turn.
-- Funds increase each turn by: (Population / 2) + (Commercial level + Industrial level).
-- City Hall is the source of road connectivity and is unique and non-demolishable.
-- Roads are only connected if they trace through other roads to City Hall.
-- Power plants provide a Manhattan-radius of 6 tiles.
-- Zones grow by 1 level per turn if powered and road-adjacent.
-- Zones decay by 1 level per turn if they lose power or road adjacency.
-- Maximum zone level is 3.
-- Residential (R) supplies Workers in a radius and dislikes Pollution.
-- Industrial (I) supplies Goods and Pollution and requires Workers.
-- Commercial (C) requires Workers and Goods.
+#+CAPTION: Congestion building up on busy routes.
+[[file:screenshots/congestion.png]]
 
 * Controls
+The cursor marks the active tile. Select a tool, move to a tile, then place with
+=RET= or mouse click.
 
-- =R= select Residential and place once
-- =C= select Commercial and place once
-- =I= select Industrial and place once
-- =r= select Road and place once
-- =p= select Power plant and place once
-- =h= select City Hall and place once
-- =SPC= or =RET= place selected tool at cursor
-- =d= demolish at cursor
-- =u= undo last action
-- =n= advance one turn
-- Arrow keys move the cursor
-- =o= cycle overlays (goods, polution, connectivity, etc)
+** Building Tool Selection
+- =r=: road
+- =p=: powerline
+- =R=: residential zone (3x3)
+- =C=: commercial zone (3x3)
+- =I=: industrial zone (3x3)
+- =c=: coal plant (3x3)
+- =n=: nuclear plant (4x4)
+- =f=: fire station (3x3)
+- =o=: police station (3x3)
+- =k=: park
+- =b=: bulldoze
+- =i=: inspect tile
+- =TAB= or =T=: next tool
+- =S-TAB= (backtab): previous tool
 
-* Basic Configuration
+** Placement and Inspection
+- =RET=: place selected tool (or inspect in inspect mode)
+- left mouse down (=down-mouse-1=): place selected tool at clicked tile
 
-- Start with a custom map by calling =elcity-start= with a list of row strings.
-- Example call: ~(elcity-start '("H=R0" "...."))~
-- Map tokens are defined in tile definitions.
-- Canonical tokens include =..=, =~~=, ~==~, =PP=, =HH=, =R0=-=R3=, =C0=-=C3=, =I0=-=I3=.
-- Short aliases are also accepted: =.=, =~=, ~=~, =P=, =H=, =R=, =C=, =I=.
-- Default map rows live in =elcity-maps.el= (=elcity-map-default-rows=).
-- Default map size is set by =elcity-core-map-width= and =elcity-core-map-height=.
+** Movement
+- Arrow keys or =C-f C-b C-n C-p=: move one tile
+- =C-a= or =Home=: jump to first tile in current row
+- =C-e= or =End=: jump to last tile in current row
 
-* Development
+** Simulation and Overlays
+- =SPC=: play/pause simulation
+- =.=: advance one tick (single-step)
+- =m=: cycle map overlay
 
-- =make test= runs ERT tests.
-- =make lint= runs package lint, checkdoc, and byte compilation.
-- =make compile= byte-compiles non-test files.
+** Budget, Save/Load, and Session
+- =B=: cycle budget control (tax/infrastructure/fire/police)
+- =+= or ===: increase selected budget control
+- =-=: decrease selected budget control
+- =S=: save game
+- =L=: load game
+- =u=: undo last placement (up to 3)
+- =q=: quit
 
-* Project Layout
+* Running the Game
 
-- =elcity.el= entry point that wires core and UI
-- =elcity-core.el= pure simulation and state transitions
-- =elcity-tiles.el= tile definitions and effect metadata
-- =elcity-ui.el= UI shell and input handling
-- =elcity-maps.el= map presets
-- =test/= ERT tests
+Needs:
+
+- Emacs 30.1 or newer
+- Emacs GUI mode
+- GNU Make
+
+For real play, compile first; the uncompiled engine is too slow.
+I only tested this in graphical Emacs on GNU/Linux.
+
+#+begin_src bash
+make compile run
+#+end_src
+
+This opens the ElCity UI with simulation starts paused.

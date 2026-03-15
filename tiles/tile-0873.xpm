@@ -1,0 +1,25 @@
+/* XPM */
+static char *tile-0873[] = {
+"16 16 5 1",
+"  c Gray80",
+". c Gray60",
+"X c Gray40",
+"o c #64AA2C",
+"f c Gray20",
+"fffffffffffffXXX",
+"  f...fffffffXXX",
+"  f...fffffffXXX",
+"  f...fffffffXXX",
+"fffffffffffffXXX",
+"fffffffffffffXXX",
+"fffffffffffffXXX",
+"fffffffffffffXXX",
+"fffffffffffffXXX",
+"XXXXXXXXXXXXXXXX",
+"XXXXXXXXXXXXXXXX",
+"XXXXXXXXXXXXXXXX",
+"oooooooooooooooo",
+"oooooooooooooooo",
+"oooooooooooooooo",
+"oooooooooooooooo"
+};

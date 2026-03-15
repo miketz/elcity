@@ -1,0 +1,23 @@
+/* XPM */
+static char *tile-0069[] = {
+"16 16 3 1",
+"  c Gray80",
+". c #64AA2C",
+"X c Gray20",
+"....XXXXXXXX....",
+"....XXX XXXX....",
+"....XXX XXXX....",
+"....XXXXXXXX....",
+"....XXXXXXXX....",
+"....XXX XXXX....",
+"....XXX XXXX....",
+"....XXXXXXXX....",
+"....XXXXXXXX....",
+"....XXX XXXX....",
+"....XXX XXXX....",
+"....XXXXXXXX....",
+"....XXXXXXXX....",
+"....XXX XXXX....",
+"....XXX XXXX....",
+"....XXXXXXXX...."
+};

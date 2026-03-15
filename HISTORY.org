@@ -1,0 +1,72 @@
+#+title: Background
+
+* History
+
+For as long as I can remember, I was fascinated with the original SimCity, and for almost
+as long I was both an Emacs user and a big Lisp enthusiast.
+
+A few months ago I started playing with various architectures for such a game in Emacs
+Lisp, talking to my LLMs about the likely systems that would need to be
+supported. Finally, I put together a quick prototype - ElCity v1 - which for some reason
+became a minor sensation.
+
+I never intended the prototype to be a playable game, but seeing the reaction, I decided
+to push it as far as possible into the "real game zone", and also test some of the ideas I
+had for what an agentic development process might look like.
+
+So, after diving into [[https://github.com/SimHacker/MicropolisCore][MicropolisCore]], I formulated the minimal set of features I might
+want to support to make a working game similar to the original SimCity. Thus, ElCity v2
+was born.
+
+* Agents
+
+One of the points of the project was to test as many serious agents as possible (Codex,
+Claude Code, and Gemini), and see whether they can work with Emacs Lisp and with Emacs
+as the Lisp machine at all.
+
+Well... the conclusion so far is that Gemini is useless, Claude Code is actually okay
+given good specs and oversight, and Codex is actually amazing at talking to Emacs
+directly.
+
+* Development
+
+It turns out that making Codex and Claude Code work together makes a good duo: Codex is
+great at deep debugging with =emacsclient=, and at writing specs for Claude Code to
+implement.
+
+Main patterns I used:
+
+1. Start with a suggested overall architecture, then clarify it with Codex as deeply as
+   possible.
+
+2. Suggest a plan for per-component implementation. Have Codex and Claude enrich it with
+   details. Manually review the plan, make sure it gets things right. Launch Claude and get
+   some coffee.
+
+3. Suggest a set of core scenarios that a given component should satisfy.
+
+4. Make Claude build a runnable scenario, then write code to make it work.
+
+5. Ask Codex for a deep review.
+
+6. "Distill" the final release by removing temporary tests, scenarios, and dev-support
+   code, then get LLMs to review everything one last time.
+
+Tools:
+
+1. The amazing [[https://github.com/xenodium/agent-shell][agent-shell]] for talking to agents.
+
+2. GNU Make and direct Emacs batch mode for project organization.
+
+3. A huge amount of [[https://www.gnu.org/software/emacs/manual/html_mono/ert.html][ERT]] tests.
+
+* Challenges
+
+The interesting bit is that while coming up with systems was relatively easy, balance was
+not, because I had to balance all system interactions, and there's no better way than just
+playing the damn game.
+
+I had to draw all the tiles myself. And my talent for pixel art is... limited.
+
+I do not really understand how to license this project. I'd go for GPLv3, but does that
+make sense in this case? No idea.
